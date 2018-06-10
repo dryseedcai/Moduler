@@ -2,6 +2,7 @@ package com.easy.moduler.appbox;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -25,9 +26,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView tvLog = findViewById(R.id.tv_log);
-        OkBus.getInstance().register(Constants.MODULE_PRINT_LOG, mLogEvent = msg -> {
-            String log = tvLog.getText().toString();
-            tvLog.setText(msg.obj + "\n" + log);
+        OkBus.getInstance().register(Constants.MODULE_PRINT_LOG, mLogEvent = new Event() {
+            @Override
+            public void call(Message msg) {
+                String log = tvLog.getText().toString();
+                tvLog.setText(msg.obj + "\n" + log);
+            }
         }, Bus.UI);
     }
 

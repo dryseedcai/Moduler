@@ -98,4 +98,16 @@ public class RouterRuleProcessor implements IProcessor {
         messager.printMessage(Diagnostic.Kind.ERROR, this.getClass().getCanonicalName() + " : " + error);
     }
 
+    /*
+        module_a_AutoRouterRuleCreator.java:
+
+            @AutoService(IRouterRulesCreator.class)
+            public class module_a_AutoRouterRuleCreator implements IRouterRulesCreator {
+              @Override
+              public void initRule(Map<String, Class<? extends Activity>> rules) {
+                rules.put("moduleHost://com.module.moduleA", AModuleActivity.class);
+              }
+            }
+
+     */
 }

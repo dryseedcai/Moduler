@@ -194,9 +194,12 @@ public class ServiceBus {
     public <T> void registerService(final int serviceId, final CallBack<T> callback) {
         LogUtils.logOnUI(Constants.TAG, "注册服务  " + Integer.toHexString(Math.abs(serviceId)));
         okBus.unRegister(serviceId);//服务提供者只能有一个
-        okBus.register(serviceId, msg -> {
-            //TODO 优化到子线程
-            okBus.onEvent(serviceId - 1, callback.onCall(msg));
+        okBus.register(serviceId, new Event() {
+            @Override
+            public void call(Message msg) {
+                //TODO 优化到子线程
+                okBus.onEvent(serviceId - 1, callback.onCall(msg));
+            }
         });
     }
 }

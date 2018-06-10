@@ -2,6 +2,7 @@ package com.easy.moduler.module_service;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -26,12 +27,20 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        OkBus.getInstance().register(Constants.MODULE_B_EVENT001, mEvent = msg -> LogUtils.logOnUI(Constants.TAG, "service进程收到消息:Message-->service: " + msg.obj));
+        OkBus.getInstance().register(Constants.MODULE_B_EVENT001, mEvent = new Event() {
+            @Override
+            public void call(Message msg) {
+                LogUtils.logOnUI(Constants.TAG, "service进程收到消息:Message-->service: " + msg.obj);
+            }
+        });
 
         TextView tvLog = findViewById(R.id.tv_log);
-        OkBus.getInstance().register(Constants.MODULE_PRINT_LOG, mLogEvent = msg -> {
-            String log = tvLog.getText().toString();
-            tvLog.setText(msg.obj + "\n" + log);
+        OkBus.getInstance().register(Constants.MODULE_PRINT_LOG, mLogEvent = new Event() {
+            @Override
+            public void call(Message msg) {
+                String log = tvLog.getText().toString();
+                tvLog.setText(msg.obj + "\n" + log);
+            }
         }, Bus.UI);
 
     }
